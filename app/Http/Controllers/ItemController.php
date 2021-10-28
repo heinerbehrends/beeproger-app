@@ -28,7 +28,7 @@ class ItemController extends Controller
         $input = $request->input();
         Item::create($input);
         
-        return Item::latest()->first();
+        return Item::latest()->first(); // Or return only the status code?
     }
 
     /**
@@ -39,11 +39,11 @@ class ItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Item $item)
-    {
+    {   
         $input = $request->input();
         $item->update($input);
 
-        return $item;
+        return $item; // Or return only the status code?
     }
 
     /**
