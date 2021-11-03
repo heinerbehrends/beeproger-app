@@ -27,7 +27,6 @@ class ItemController extends Controller
     {   
         $input = $request->input();
         Item::create($input);
-        
         return Item::latest()->first(); // Or return only the status code?
     }
 
@@ -40,10 +39,16 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {   
+        if($request->hasFile('foto')) {
+            if($request->file('foto')->isValid()) {
+                $path = $request->file('foto')->store('images');
+                $item->update(['foto' => $path]);
+            }
+        }
         $input = $request->input();
         $item->update($input);
 
-        return $item; // Or return only the status code?
+        return $item; 
     }
 
     /**
