@@ -13,5 +13,6 @@ class Item extends Model
     protected $attributes = [
         'isDone' => false,
         'foto' => '',
+        'details' => 'Add a more detailed description'
     ];
 }
