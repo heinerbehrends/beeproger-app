@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ItemController extends Controller
 {
@@ -25,10 +26,26 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {   
+        // validate the request, title is required and unique
+        // return 400 BadRequest and error messages as json
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|unique:items,title',
+        ], [
+            'title.required' => 'Please enter a title',
+            'title.unique' => 'The title already exists',
+        ]);
+        if ($validator->fails()) {
+            $response = [
+                'success' => false,
+                'message' => $validator->errors()->first('title'),
+            ];
+            return response()->json($response, 400);
+        }
+        // if validation succeeds create the item
         $input = $request->input();
         Item::create($input);
-        return Item::latest()->first(); // Or return only the status code?
-    }
+        return Item::latest()->first();
+}
 
     /**
      * Update the specified resource in storage.
